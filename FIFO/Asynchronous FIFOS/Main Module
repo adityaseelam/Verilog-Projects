@@ -1,0 +1,53 @@
+module ASYNCFIFO(input rd_clk,input wr_clk,input wr_rst,input rd_rst,input[3:0] data_in,output reg[3:0] data_out, output full, output empty,input wr_e,input rd_e,output reg[3:0] wr_ptr, output reg[3:0] rd_ptr, output [3:0] bin_w_gray,output [3:0] bin_r_gray,output reg[3:0] wr_sync1,output reg[3:0] wr_sync2,output reg[3:0] rd_sync1,output reg[3:0] rd_sync2,output [3:0] wr_syncptr, output [3:0] rd_syncptr); 
+       
+         reg[3:0] memory[0:7];     
+       
+       always@(posedge wr_clk)begin
+         if(wr_rst) begin
+           wr_ptr<=0;
+         end else if(wr_e) begin
+           memory[wr_ptr]<=data_in;
+           wr_ptr<=wr_ptr+1;
+         end
+       end
+  Binary_Gray d0(.binary(wr_ptr),
+                        .out(bin_w_gray));
+     
+         always@(posedge rd_clk)begin
+           if(rd_rst)begin
+             rd_ptr<=0;
+           end else if(rd_e)begin
+             data_out<=memory[rd_ptr];
+             rd_ptr<=rd_ptr+1;
+           end
+         end
+   Binary_Gray d1(.binary(rd_ptr),
+                          .out(bin_r_gray));
+           
+       always@(posedge wr_clk)begin
+         if(wr_rst)begin
+           wr_sync1<=0;
+           wr_sync2<=0;
+         end else if(rd_e) begin           
+         wr_sync1<=bin_r_gray;
+         wr_sync2<=wr_sync1;
+         end
+       end
+  Gray_Binary dd0(.gray(wr_sync2),  
+                         .out(rd_syncptr));
+       
+       always@(posedge rd_clk)begin
+         if(rd_rst)begin
+           rd_sync1<=0;
+           rd_sync2<=0;
+         end else if(wr_e)begin
+           rd_sync1<=bin_w_gray;
+           rd_sync2<=rd_sync1;
+         end
+       end
+  Gray_Binary dd1(.gray(rd_sync2),
+                        .out(wr_syncptr)); 
+         
+  assign full={(~wr_syncptr[3]==rd_syncptr[3])&&(wr_syncptr[2:0]==rd_syncptr[2:0])};
+  assign empty=(wr_syncptr==rd_syncptr);
+endmodule
