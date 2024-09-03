@@ -1,0 +1,16 @@
+module Binary_Gray(input[3:0] binary, output[3:0] out);
+  
+ /* genvar i;
+  generate
+    for(i=0;i<3;i=i+1)begin
+      assign out[i]=binary[i]^binary[i+1];
+    end
+  endgenerate*/
+  assign out[0]=binary[0]^binary[1];
+  assign out[1]=binary[1]^binary[2];
+  assign out[2]=binary[2]^binary[3];
+  assign out[3]=binary[3];
+endmodule
+      
+  
+  
