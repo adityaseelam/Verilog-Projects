@@ -1,0 +1,21 @@
+module tb_SIPO;
+  reg d;
+  reg clk;
+  wire[3:0] y;
+  
+  SIPO uut(.clk(clk),
+           .d(d),
+           .y(y));
+  
+  always #2 clk=~clk;
+  
+  initial begin
+    clk=0;
+      d=1;
+    #4 d=0;
+    #4 d=0;
+    #4 d=1;
+    
+    #20 $finish;
+  end
+endmodule
