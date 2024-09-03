@@ -1,0 +1,8 @@
+module Gray_Binary(input [3:0] gray, output [3:0] out);
+                           // MSB is the same
+  assign out[3] = gray[3];
+  assign out[2] = gray[2] ^ out[3];
+  assign out[1] = gray[1] ^ out[2];
+  assign out[0] = gray[0] ^ out[1];
+  
+endmodule
