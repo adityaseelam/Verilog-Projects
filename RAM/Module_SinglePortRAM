@@ -1,0 +1,12 @@
+module singleram(input clk, input wr, input rd, input[7:0] addr, output reg [3:0] data_out, input[3:0] data_in);
+  
+  reg[3:0] memory [255:0];
+  
+  always@(posedge clk)
+    if(wr) begin
+      memory[addr]<=data_in;
+  end else if(rd) begin
+    
+    data_out<=memory[addr];
+  end
+endmodule
