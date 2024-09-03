@@ -1,0 +1,77 @@
+`timescale 1ns/1ps
+`define clk_period 10
+`define clk_periodd 14
+module tb_ASYNCFIFO();
+  
+  reg wr_clk;
+  reg rd_clk;
+  reg wr_rst;
+  reg rd_rst;
+  reg[3:0] data_in;
+  wire[3:0] data_out;
+  wire full;
+  wire empty;
+  reg wr_e;
+  reg rd_e;
+  wire[3:0] wr_ptr;
+  wire[3:0] rd_ptr;
+  wire[3:0] bin_w_gray;
+  wire[3:0] bin_r_gray;
+  wire[3:0] wr_sync1;
+  wire[3:0] wr_sync2;
+  wire[3:0] rd_sync1;
+  wire[3:0] rd_sync2;
+  wire[3:0] wr_syncptr;
+  wire[3:0] rd_syncptr;
+  
+  ASYNCFIFO uut(.rd_clk(rd_clk),
+                .wr_clk(wr_clk),
+                .rd_rst(rd_rst),
+                .wr_rst(wr_rst),
+                .data_in(data_in),
+                .data_out(data_out),
+                .full(full),
+                .empty(empty),
+                .wr_e(wr_e),
+                .rd_e(rd_e),
+                .wr_ptr(wr_ptr),
+                .rd_ptr(rd_ptr),
+                .bin_w_gray(bin_w_gray),
+                .bin_r_gray(bin_r_gray),
+                .wr_sync1(wr_sync1),
+                .wr_sync2(wr_sync2),
+                .rd_sync1(rd_sync1),
+                .rd_sync2(rd_sync2),
+                .wr_syncptr(wr_syncptr),
+                .rd_syncptr(rd_syncptr));
+  
+  initial wr_clk=1'b1;
+  initial rd_clk=1'b1;
+  always #(`clk_period/2) wr_clk=~wr_clk;
+  always #(`clk_periodd/2) rd_clk=~rd_clk;
+  
+  integer i;
+  
+  initial begin
+    wr_rst=1;
+    rd_rst=1;
+    data_in=4'b0;
+    #(`clk_period);
+    wr_e=1;
+    rd_rst=0;
+    wr_rst=0;
+    
+    for(i=0;i<8;i=i+1)begin
+      data_in=data_in+i;
+      #(`clk_period);
+    end
+    wr_e=0;
+    rd_e=1;
+    for(i=0;i<8;i=i+1)begin
+      #(`clk_periodd);
+    end
+    
+    #14 $finish;
+  end
+    endmodule
+    
