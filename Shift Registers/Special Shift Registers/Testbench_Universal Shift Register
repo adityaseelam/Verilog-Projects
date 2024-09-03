@@ -1,0 +1,42 @@
+module tb_universal();
+  reg clk;
+  reg[1:0] mode;
+  reg[3:0] pin;
+  reg[3:0] pout;
+  reg sr;
+  reg sl;
+  reg rst;
+  wire slo;
+  wire sro;
+  
+  universal uut(.clk(clk),
+                .mode(mode),
+                .pin(pin),
+                .pout(pout),
+                .sr(sr),
+                .sl(sl),
+                .rst(rst),
+                .slo(slo),
+                .sro(sro));
+  
+  always #5 clk=~clk;
+  
+  initial begin 
+    clk=0;
+    rst=1;
+    
+    #10
+    rst=0;
+    sl=1'b1;
+    mode=2'b10;
+    
+    #50
+    sr=1'b0;
+    
+    #20
+    sr=1'b1;
+    
+    #50 $finish;
+  end
+
+endmodule
