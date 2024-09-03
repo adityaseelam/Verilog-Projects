@@ -1,0 +1,52 @@
+`timescale 1ns/1ps
+`define clk_period 10
+module tb_FIFOSYNC1();
+reg clk;
+reg  rst;
+reg wr_e;
+reg rd_e;
+reg[7:0] data_in;
+wire[7:0] data_out;
+wire full;
+wire empty;
+wire[3:0] count;
+
+FIFOSYNC1 uut(.clk(clk),
+              .rst(rst),
+              .wr_e(wr_e),
+              .rd_e(rd_e),
+              .data_in(data_in),
+              .data_out(data_out),
+              .full(full),
+              .empty(empty),
+              .count(count));
+
+initial clk=1'b1;
+ always #(`clk_period/2) clk=~clk;
+integer i;
+
+initial begin
+    rst=1;
+    wr_e=0;
+    rd_e=0;
+    data_in=8'b0;
+
+    #(`clk_period);
+    rst=0;
+    wr_e=1;
+    
+
+    for(i=0;i<16;i=i+1)begin
+        data_in=i;
+        #(`clk_period);
+    end
+
+    wr_e=0;
+    rd_e=1;
+     for(i=0;i<16;i=i+1)begin
+        #(`clk_period);
+    end
+
+    #10 $finish;
+end
+endmodule
