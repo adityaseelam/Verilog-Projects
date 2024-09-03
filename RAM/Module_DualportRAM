@@ -1,0 +1,20 @@
+module dualport(input clk_a,input clk_b,input[8:0] addr_a, input[8:0] addr_b, input[4:0] a_in, input[4:0] b_in, output reg[4:0] a_o, output reg[4:0] b_o, input en_a, input en_b);
+  
+  reg[3:0] memory[511:0];
+  
+  always@(posedge clk_a)begin
+    if(en_a) begin
+      memory[addr_a]<=a_in;
+    end else if(!en_a) begin
+      a_o<=memory[addr_a];
+    end
+  end
+  always@(posedge clk_b)begin
+    if(en_b) begin
+      memory[addr_b]<=b_in;
+    end else if(!en_b) begin
+      b_o<=memory[addr_b];
+    end
+  end
+  
+endmodule
