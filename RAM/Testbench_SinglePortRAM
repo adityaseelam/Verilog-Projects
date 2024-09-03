@@ -1,0 +1,41 @@
+module tb_singleram();
+  
+  reg clk;
+  reg wr;
+  reg rd;
+  reg[7:0] addr;
+  reg[3:0] data_in;
+  wire[3:0] data_out;
+  
+  singleram uut(.clk(clk),
+                .wr(wr),
+                .rd(rd),
+                .addr(addr),
+                .data_in(data_in),
+                .data_out(data_out));
+  
+  always #5 clk<=~clk;
+  
+  initial begin
+    
+    clk=0;
+    wr=1;
+    rd=0;
+    data_in=4'b0001;
+    addr=8'b00000000;
+    
+    #20
+    data_in=4'b1110;
+    addr=8'b00000001;
+    
+    #10
+    wr=0;
+    rd=1;
+    addr=8'b00000000;
+    #10
+    wr=0;
+    rd=1;
+    addr=8'b00000001;
+    #20 $finish;
+  end
+endmodule
