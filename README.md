@@ -1,2 +1,2 @@
 Contains Multiple Projects which are done in only Verilog.
-If Useful drop a Star (;0;)
+If u have liked drop a Star (;0;)
