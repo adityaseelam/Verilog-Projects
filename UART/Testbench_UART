@@ -1,0 +1,59 @@
+`timescale 1ns/10ps
+`define clk_period 40
+module tb_UART();
+  parameter CLK_PER_BITS  = 217;
+//RX************************
+ reg clk;
+ //reg r_data_in;
+wire[7:0] r_data_out;
+ wire r_dv;
+wire[7:0] r_count;
+wire[7:0] r_bitindex;
+wire[2:0] r_STATE;
+ //TX******************** 
+wire w_UART_Line;
+reg[7:0] t_data_in;
+wire t_data_out;
+ reg t_dv;
+wire[7:0] t_count;
+wire[7:0] t_bitindex;
+wire[2:0] t_STATE;
+wire t_done;
+wire t_active;
+wire[7:0] t_register;
+
+UARTTX #(.CLK_PER_BITS(CLK_PER_BITS)) uut(.clk(clk),
+                                          .data_in(t_data_in),
+                                          .data_out(t_data_out),
+                                          .dv(t_dv),
+                                          .count(t_count),
+                                          .bitindex(t_bitindex),
+                                          .STATE(t_STATE),
+                                          .active(t_active),
+                                          .done(t_done),
+                                          .register(t_register));
+UARTRX #( .CLK_PER_BITS(CLK_PER_BITS)) uutt(
+                 .clk(clk),
+  				 .data_in(w_UART_Line),
+  			     .data_out(r_data_out),
+  			     .dv(r_dv),
+  			     .count(r_count),
+  				 .bitindex(r_bitindex),
+ 				 .STATE(r_STATE));
+assign w_UART_Line=t_active? t_data_out:1'b1;
+initial clk=0;
+always #(`clk_period/2) clk<=~clk;
+                                          
+initial begin
+  t_dv=1'b1;
+  t_data_in=8'h37;
+  @(posedge clk);
+  @(posedge clk);
+   t_dv=1'b0;
+end
+endmodule
+  
+  
+
+
+
