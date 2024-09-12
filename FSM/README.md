@@ -3,5 +3,11 @@ sequence detector. The sequence detector is going to take inputs serially and if
 going to output **0**. Also Ive considered the possibility of overlapping of bits. 
 
 Here is the timing diagrams of the both State Machine codes.
-![Mealyy](https://github.com/user-attachments/assets/fcb42391-2320-4303-8a7c-f5ce53b2fdd9)
+*MOORE TIMING*
+![Moore](https://github.com/user-attachments/assets/1b4ff166-aa2e-4663-97d1-f4de23921833)
 
+As you can see even though we get 11011 sequence but in the next state we are getting the output so output is function of only current state.
+
+*MEALY TIMING*
+![Mealyy](https://github.com/user-attachments/assets/56520f17-54b7-4b70-b019-d64b2f4eec13)
+As you can see as soon as we get 11011 sequence we are getting the output in that state itself so output is the function of input as well as current state.
