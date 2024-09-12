@@ -3,6 +3,7 @@ sequence detector. The sequence detector is going to take inputs serially and if
 going to output **0**. Also Ive considered the possibility of overlapping of bits. 
 
 Here is the timing diagrams of the both State Machine codes.
+
 *MOORE TIMING*
 ![Moore](https://github.com/user-attachments/assets/1b4ff166-aa2e-4663-97d1-f4de23921833)
 
