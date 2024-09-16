@@ -1,0 +1,40 @@
+module testbench();
+reg clk_a;
+reg clk_b;
+reg rst;
+reg data_in;
+wire out_a;
+wire out_b;
+wire out_c;
+
+Dualflop uut(. clk_a(clk_a),
+                . clk_b(clk_b),
+                .rst(rst),
+             .data_in(data_in),
+                .out_a(out_a),
+                .out_b(out_b),
+                .out_c(out_c)                                 
+                              );
+
+    always #5 clk_a=~clk_a ;
+    always #20 clk_b=~clk_b;      
+
+    initial begin
+        clk_a=0;
+        clk_b=0;
+        rst=1;
+
+        #40;
+        rst=0;
+      #15;
+        data_in=1;
+        #5;
+        data_in=0;
+        
+        #100;
+        $finish;
+    end   
+  initial begin
+    $dumpfile("dump.vcd"); $dumpvars;
+  end
+endmodule
