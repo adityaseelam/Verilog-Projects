@@ -23,21 +23,25 @@ Toggle_Sync uut(. clk_a(clk_a),
                               
                               );
 
-    always #10 clk_a=~clk_a ;
-    always #5 clk_b=~clk_b;      
+    always #5 clk_a=~clk_a ;
+    always #20 clk_b=~clk_b;      
 
     initial begin
         clk_a=0;
         clk_b=0;
         rst=1;
 
-        #30;
+        #40;
         rst=0;
+      #5;
         pulse_in=1;
         #5;
         pulse_in=0;
         
         #100;
         $finish;
-    end                  
+    end   
+  initial begin
+    $dumpfile("dump.vcd"); $dumpvars;
+  end
 endmodule
