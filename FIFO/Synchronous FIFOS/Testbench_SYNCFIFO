@@ -9,8 +9,6 @@ reg[7:0] data_in;
 wire[7:0] data_out;
 wire full;
 wire empty;
-wire[3:0] count;
-
 FIFOSYNC1 uut(.clk(clk),
               .rst(rst),
               .wr_e(wr_e),
@@ -18,8 +16,8 @@ FIFOSYNC1 uut(.clk(clk),
               .data_in(data_in),
               .data_out(data_out),
               .full(full),
-              .empty(empty),
-              .count(count));
+              .empty(empty)
+                           );
 
 initial clk=1'b1;
  always #(`clk_period/2) clk=~clk;
