@@ -1,0 +1,20 @@
+module Dualflop(input clk_a, input clk_b,input rst,input data_in,output reg out_a, output reg out_b,output reg out_c);
+always@(posedge clk_a) begin
+    if(rst) begin
+        out_a<=0;
+    end else begin
+       out_a<=data_in;
+    end
+end
+
+    always@(posedge clk_b) begin
+        if(rst) begin
+            out_b<=0;
+            out_c<=0;
+        end else begin
+            out_b<=out_a;
+            out_c<=out_b;
+        end
+    end
+endmodule
+ 
